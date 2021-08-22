@@ -11,8 +11,28 @@ def huffman(pList):
     plist: ((0.50,'A'),(0.25,'B'),(0.125,'C'),(0.125,'D'))
     returns: {'A': [0], 'B': [1, 0], 'C': [1, 1, 0], 'D': [1, 1, 1]} 
     """
-    # Your Code Here
-    pass
+    # Initialize a dictionary of symbols with empty lists of huffman encoding
+    huffman = {}
+    for tup in pList:
+        huffman[tup[1]] = []
+    
+    # Sort the pList from greatest to least symbol probability
+    sorted_pList = sorted(pList, key=lambda p: p[0], reverse = True)
+    while not len(sorted_pList) == 1:   # Until there is only 1 item in the list
+        last = sorted_pList[-1]         # Get the least probable symbol
+        last_list = last[1].split(",")  # If it's a grouped symbol get the individual symbols
+        for item in last_list:          # For each item in the group
+            huffman[item].insert(0, 0)  # Add a "0" to the beginning of the huffman encoding
+        second_last = sorted_pList[-2]  # Do the same for the second-least probable symbol
+        second_last_list = second_last[1].split(",")
+        for item in second_last_list:
+            huffman[item].insert(0, 1)  # Except add a "1" to the beginning of the huffman encoding
+        new_item = (last[0]+second_last[0], last[1]+","+second_last[1]) # Join the two least probable to a new entry
+        sorted_pList = sorted_pList[:-2]    # Drop the two least probable
+        sorted_pList.append(new_item)       # Add the grouped two least probable
+        sorted_pList = sorted(sorted_pList, key=lambda p: p[0], reverse = True) # Sort the list by most probable
+    return huffman
+    
 
 if __name__ == '__main__':
     # test case 1: four symbols with equal probability

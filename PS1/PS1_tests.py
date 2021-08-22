@@ -18,13 +18,13 @@ def test_huffman(huffman,plist,expected_sizes,verbose=True):
                 if s == symbol:
                     avg_len += len(code)*prob
                     info_content += prob*math.log(1.0/prob,2)
-        print(f"Expected length of encoding a choice = {avg_len} bits")
-        print(f"Information content in a choice = {info_content} bits")
+        print(f"Expected length of encoding a choice = {round(avg_len,2)} bits")
+        print(f"Information content in a choice = {round(info_content,2)} bits")
 
     # make sure each code is not a prefix of some other code
     codes = ["".join(map(str,code)) for code in encoding_dict.values()]
-    for i in xrange(len(codes)):
-        for j in xrange(len(codes)):
+    for i in range(len(codes)):
+        for j in range(len(codes)):
             if i != j:
                 assert not codes[j].startswith(codes[i]),\
                        "Code %s is a prefix of code %s" % (str(codes[i]),str(codes[j]))
