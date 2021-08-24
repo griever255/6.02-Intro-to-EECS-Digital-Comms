@@ -143,17 +143,17 @@ def pixels2img(pixels,nrows,ncols):
     assert len(pixels)==nrows*ncols,"pixels2img: size of pixels not nrows*ncols"
     result = numpy.zeros((nrows*ncols,3),dtype=float)
     white = numpy.array([1.,1.,1.])
-    for i in xrange(nrows*ncols):
+    for i in range(nrows*ncols):
         if pixels[i]: result[i,:] = white
     return numpy.reshape(result,(nrows,ncols,3))
 
 # convert pixel vector into run-length vector
 def pixels2runs(bw,maxrun=2**31):
-    result = numpy.zeros(bw.size/2,dtype=int)  # worst case: alternating pixels
+    result = numpy.zeros(bw.size//2,dtype=int)  # worst case: alternating pixels
     index = 0
     color = 1
     run = 0
-    for i in xrange(bw.size):
+    for i in range(bw.size):
         if bw[i] == color:
             # extend length of run
             run += 1
@@ -200,10 +200,10 @@ def pixels2blocks(bw,nrows,ncols,w,h):
 
     block = numpy.zeros(w*h,dtype=int)
     convert = numpy.array([2**i for i in xrange(w*h)],dtype=int)
-    for i in xrange(0,nrows,h):
-        for j in xrange(0,ncols,w):
+    for i in range(0,nrows,h):
+        for j in range(0,ncols,w):
             block.fill(0)  # clear block
-            for k in xrange(h):
+            for k in range(h):
                 r = i + k
                 if r >= nrows: break;
                 start = r*ncols+j
@@ -218,11 +218,11 @@ def blocks2pixels(blocks,nrows,ncols,w,h):
     blocks_down = (nrows+h-1)/h
     pixels = numpy.zeros((blocks_down*h,blocks_across*w),dtype=int)
 
-    for i in xrange(blocks_down):
-        for j in xrange(blocks_across):
+    for i in range(blocks_down):
+        for j in range(blocks_across):
             block = blocks[i*blocks_across + j]
-            for r in xrange(h):
-                for c in xrange(w):
+            for r in range(h):
+                for c in range(w):
                     pixels[i*h + r,j*w + c] = (block >> (r*w + c)) & 1
 
     return numpy.reshape(pixels[:nrows][:ncols],-1)

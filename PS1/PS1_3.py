@@ -43,7 +43,7 @@ if __name__ == '__main__':
     print("  bits when Huffman-encoding runs:",\
           len(encoded_runs))
     print("  Top 10 run lengths [probability]:")
-    for i in xrange(10):
+    for i in range(10):
         print("    %d [%3.2f]" % (plist[i][1],plist[i][0]))
 
     # Experiment 2: Huffman-encoding white runs, black runs
@@ -53,12 +53,12 @@ if __name__ == '__main__':
     cblack = huffman(plist_black)
     encoded_runs = numpy.concatenate(
         [cwhite[runs[i]] if (i & 1) == 0 else cblack[runs[i]]
-         for i in xrange(len(runs))])
+         for i in range(len(runs))])
     print("\nExperiment 2:")
     print("  bits when Huffman-encoding runs by color:",\
           len(encoded_runs))
     print("  Top 10 white run lengths [probability]:")
-    for i in xrange(10):
+    for i in range(10):
         print("    %d [%3.2f]" % (plist_white[i][1],
                                   plist_white[i][0]))
     print("  Top 10 black run lengths [probability]:")
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
     # Experiment 3: Huffman-encoding run pairs
     # where each pair is (white run,black run)
-    pairs = [(runs[i],runs[i+1]) for i in xrange(0,len(runs),2)]
+    pairs = [(runs[i],runs[i+1]) for i in range(0,len(runs),2)]
     plist_pairs = PS1_tests.histogram(pairs)
     cpair = huffman(plist_pairs)
     encoded_pairs = numpy.concatenate([cpair[pair]
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     print("  bits when Huffman-encoding run pairs:",\
           len(encoded_pairs))
     print("  Top 10 run-length pairs [probability]:")
-    for i in xrange(10):
+    for i in range(10):
         print("    %s [%3.2f]" % (str(plist_pairs[i][1]),
                                   plist_pairs[i][0]))
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     print("  bits when Huffman-encoding 4x4 image blocks:",\
           len(encoded_blocks))
     print("  Top 10 4x4 blocks [probability]:")
-    for i in xrange(10):
+    for i in range(10):
         print("    0x%04x [%3.2f]" % (plist_blocks[i][1],
                                       plist_blocks[i][0]))
 
