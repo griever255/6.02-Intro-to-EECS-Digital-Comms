@@ -1,5 +1,54 @@
 # template file for 6.02 PS1, Python Task 1
-import PS1_tests
+import PS1_tests, numpy
+
+def depth(l):
+    if isinstance(l, list):
+        return 1 + max(depth(item) for item in l)
+    else:
+        return 0
+
+def get_tree(pList):
+    """
+    Returns a list of lists of the Huffman Tree
+    """
+    sorted_pList = sorted(pList, key=lambda p: p[0], reverse = True)   # Sort based on descending probabilities
+    if len(sorted_pList) == 1:
+        return sorted_pList[0][1]
+    else:
+        last = sorted_pList[-1]
+        second_last = sorted_pList[-2]
+        new_prob = last[0] + second_last[0]
+        new_name = [last[1], second_last[1]]
+        new_entry = (new_prob, new_name)
+        sorted_pList = sorted_pList[:-2]
+        sorted_pList.append(new_entry)
+        return get_tree(sorted_pList)
+
+def get_huffman_encoding(symbol, huff_tree):
+    code = []
+    # print(symbol)
+    # print(huff_tree[0])
+    # print(huff_tree[1])
+    if symbol == huff_tree[0]:
+        return [0]
+    elif symbol == huff_tree[1]:
+        return [1]
+    elif symbol in huff_tree[0] and isinstance(huff_tree[0], list):
+        code += [0]
+        code += get_huffman_encoding(symbol, huff_tree[0])
+    elif symbol in huff_tree[1] and isinstance(huff_tree[1], list):
+        code += [1]
+        code += get_huffman_encoding(symbol, huff_tree[1])
+    else:
+        left_depth = depth(huff_tree[0])
+        right_depth = depth(huff_tree[1])
+        if left_depth > right_depth:
+            code += [0]
+            code += get_huffman_encoding(symbol, huff_tree[0])
+        else:
+            code += [1]
+            code += get_huffman_encoding(symbol, huff_tree[1])
+    return code
 
 # arguments:
 #   plist -- sequence of (probability,object) tuples
@@ -11,28 +60,10 @@ def huffman(pList):
     plist: ((0.50,'A'),(0.25,'B'),(0.125,'C'),(0.125,'D'))
     returns: {'A': [0], 'B': [1, 0], 'C': [1, 1, 0], 'D': [1, 1, 1]} 
     """
-    # Initialize a dictionary of symbols with empty lists of huffman encoding
-    huffman = {}
-    for tup in pList:
-        huffman[tup[1]] = []
-    
-    # Sort the pList from greatest to least symbol probability
-    sorted_pList = sorted(pList, key=lambda p: p[0], reverse = True)
-    while not len(sorted_pList) == 1:   # Until there is only 1 item in the list
-        last = sorted_pList[-1]         # Get the least probable symbol
-        last_list = last[1].split(",")  # If it's a grouped symbol get the individual symbols
-        for item in last_list:          # For each item in the group
-            huffman[item].insert(0, 0)  # Add a "0" to the beginning of the huffman encoding
-        second_last = sorted_pList[-2]  # Do the same for the second-least probable symbol
-        second_last_list = second_last[1].split(",")
-        for item in second_last_list:
-            huffman[item].insert(0, 1)  # Except add a "1" to the beginning of the huffman encoding
-        new_item = (last[0]+second_last[0], last[1]+","+second_last[1]) # Join the two least probable to a new entry
-        sorted_pList = sorted_pList[:-2]    # Drop the two least probable
-        sorted_pList.append(new_item)       # Add the grouped two least probable
-        sorted_pList = sorted(sorted_pList, key=lambda p: p[0], reverse = True) # Sort the list by most probable
-    return huffman
-    
+    huff_tree = get_tree(pList)
+    huffman_dict = {symbol[1]:get_huffman_encoding(symbol[1], huff_tree) for symbol in pList}
+    return huffman_dict
+
 
 if __name__ == '__main__':
     # test case 1: four symbols with equal probability
