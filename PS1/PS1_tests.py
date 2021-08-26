@@ -193,13 +193,13 @@ def runs2pixels(runs,npixels):
     return bw
 
 def pixels2blocks(bw,nrows,ncols,w,h):
-    blocks_across = (ncols+w-1)/w
-    blocks_down = (nrows+h-1)/h
+    blocks_across = (ncols+w-1)//w
+    blocks_down = (nrows+h-1)//h
     result = numpy.zeros(blocks_across*blocks_down,dtype=int)
     index = 0
 
     block = numpy.zeros(w*h,dtype=int)
-    convert = numpy.array([2**i for i in xrange(w*h)],dtype=int)
+    convert = numpy.array([2**i for i in range(w*h)],dtype=int)
     for i in range(0,nrows,h):
         for j in range(0,ncols,w):
             block.fill(0)  # clear block
@@ -214,8 +214,8 @@ def pixels2blocks(bw,nrows,ncols,w,h):
     return result
 
 def blocks2pixels(blocks,nrows,ncols,w,h):
-    blocks_across = (ncols+w-1)/w
-    blocks_down = (nrows+h-1)/h
+    blocks_across = (ncols+w-1)//w
+    blocks_down = (nrows+h-1)//h
     pixels = numpy.zeros((blocks_down*h,blocks_across*w),dtype=int)
 
     for i in range(blocks_down):

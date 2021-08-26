@@ -95,9 +95,9 @@ if __name__ == '__main__':
         print("    0x%04x [%3.2f]" % (plist_blocks[i][1],
                                       plist_blocks[i][0]))
 
-    """
+    
     # make sure we didn't goof somehow => display decoded image
-    decoded_blocks = decode(tree_block,encoded_blocks)
+    decoded_blocks = decode(cblock,encoded_blocks)
     decoded_pixels = PS1_tests.blocks2pixels(decoded_blocks,
                                          nrows,ncols,4,4)
     decoded_img = PS1_tests.pixels2img(decoded_pixels,nrows,ncols)
@@ -105,4 +105,4 @@ if __name__ == '__main__':
     p.title('Image decoded from 4x4 encoded blocks')
     p.imshow(decoded_img)
     p.show()
-    """
+    
