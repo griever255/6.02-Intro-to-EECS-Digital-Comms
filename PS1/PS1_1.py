@@ -24,30 +24,42 @@ def get_tree(pList):
         sorted_pList.append(new_entry)
         return get_tree(sorted_pList)
 
-def get_huffman_encoding(symbol, huff_tree):
-    code = []
-    # print(symbol)
-    # print(huff_tree[0])
-    # print(huff_tree[1])
-    if symbol == huff_tree[0]:
-        return [0]
-    elif symbol == huff_tree[1]:
-        return [1]
-    elif symbol in huff_tree[0] and isinstance(huff_tree[0], list):
-        code += [0]
-        code += get_huffman_encoding(symbol, huff_tree[0])
-    elif symbol in huff_tree[1] and isinstance(huff_tree[1], list):
-        code += [1]
-        code += get_huffman_encoding(symbol, huff_tree[1])
+def get_huffman_encoding(symbol, huff_tree, path):
+    print(f"{symbol}, {huff_tree}")
+    left_side = huff_tree[0]
+    right_side = huff_tree[1]
+    if str(symbol) == left_side:
+        path.append(0)
+        print(f"Symbol = {symbol}, Path = {path}")
+        code = path
+        return code
+    elif str(symbol) == right_side: 
+        path.append(1)
+        print(f"Symbol = {symbol}, Path = {path}")
+        code = path
+        return code
+    elif isinstance(huff_tree[0], list): # and symbol in huff_tree[0]:
+        path += [0]
+        print(f"Symbol = {symbol}, Path = {path}")
+        backtrack_len = len(path)
+        code = get_huffman_encoding(symbol, huff_tree[0], path)
+        if code == None: # isinstance(huff_tree[1], list): # and symbol in huff_tree[1]:
+            path = path[:backtrack_len-1]
+            path += [1]
+            print(f"Symbol = {symbol}, Path = {path}")
+            code = get_huffman_encoding(symbol, huff_tree[1], path)
+    elif isinstance(huff_tree[1], list):
+        path += [1]
+        print(f"Symbol = {symbol}, Path = {path}")
+        backtrack_len = len(path)
+        code = get_huffman_encoding(symbol, huff_tree[1], path)
+        if code == None: # isinstance(huff_tree[1], list): # and symbol in huff_tree[1]:
+            path = path[:backtrack_len-1]
+            path += [0]
+            print(f"Symbol = {symbol}, Path = {path}")
+            code = get_huffman_encoding(symbol, huff_tree[0], path)
     else:
-        left_depth = depth(huff_tree[0])
-        right_depth = depth(huff_tree[1])
-        if left_depth > right_depth:
-            code += [0]
-            code += get_huffman_encoding(symbol, huff_tree[0])
-        else:
-            code += [1]
-            code += get_huffman_encoding(symbol, huff_tree[1])
+        return None
     return code
 
 # arguments:
@@ -61,7 +73,7 @@ def huffman(pList):
     returns: {'A': [0], 'B': [1, 0], 'C': [1, 1, 0], 'D': [1, 1, 1]} 
     """
     huff_tree = get_tree(pList)
-    huffman_dict = {symbol[1]:get_huffman_encoding(symbol[1], huff_tree) for symbol in pList}
+    huffman_dict = {symbol[1]:get_huffman_encoding(symbol[1], huff_tree, []) for symbol in pList}
     return huffman_dict
 
 

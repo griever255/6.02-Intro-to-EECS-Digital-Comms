@@ -17,7 +17,6 @@ if __name__ == '__main__':
     # color).  So each element of the list is a number
     # between 0 and 255.
     runs = PS1_tests.pixels2runs(pixels,maxrun=255)
-    run_list = runs.tolist()
 
     # now print out number of bits for pixel-by-pixel
     # encoding and fixed-length encoding for runs
@@ -35,7 +34,7 @@ if __name__ == '__main__':
 
     # Start by computing the probability of each run length
     # by simply counting how many of each run length we have
-    plist = PS1_tests.histogram(run_list)
+    plist = PS1_tests.histogram(runs)
 
     # Experiment 1: Huffman-encoding run lengths
     cdict = huffman(plist)
