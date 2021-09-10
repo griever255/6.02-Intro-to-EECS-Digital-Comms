@@ -20,7 +20,7 @@ def compress(filename):
     for i in range(256):
         codewords[struct.pack(">H", i)] = chr(i)
 
-    outname = filename + "test.txt"
+    outname = filename + "test.zl"
     output = ''
     outfile = open(outname, 'wb')
     # compress using LZW compression
@@ -33,10 +33,10 @@ def compress(filename):
         else:
             codewords[index.to_bytes(2, 'big')] = string + symbol
             outfile.write(index.to_bytes(2, 'big'))
-            # output += str(index.to_bytes(2, 'big'))
+            output += str(index.to_bytes(2, 'big'))
             index += 1
             string = symbol
-    # print(output)
+    print(output)
     
         
     #for i in range(len(codewords)):
@@ -53,30 +53,32 @@ def uncompress(filename):
     """
     with open(filename, 'rb') as f:
         compressed = array.array("H", f.read())
+    print(compressed)
 
     codewords = {}
     # initialize codewords for ASCII characters
     for i in range(256):
         codewords[struct.pack(">H", i)] = chr(i)
-    print(compressed)
 
-    outname = filename + ".u"
-    # output = ''
-    # outfile = open(outname, 'wb')
-    # compress using LZW compression
+    outname = filename + ".txt"
+    output = ''
+    outfile = open(outname, 'w')
+    #decompress using LZW decompression
     index = 256
     code = compressed[0]
-    # for elem in uncompressed:
-    #     symbol = chr(elem)
-    #     if (string + symbol) in codewords.values():
-    #         string = string + symbol
-    #     else:
-    #         codewords[index.to_bytes(2, 'big')] = string + symbol
-    #         outfile.write(index.to_bytes(2, 'big'))
-    #         # output += str(index.to_bytes(2, 'big'))
-    #         index += 1
-    #         string = symbol
-    # print(output)
+    string = codewords[code.to_bytes(2, 'big')]
+    output += string
+    for elem in compressed[1:]:
+        code = elem.to_bytes(2, 'big')
+        if code not in codewords.keys():
+            entry = string + string[0]
+        else:
+            entry = codewords[code]
+        output += entry
+        codewords[index.to_bytes(2, 'big')] = string + entry[0]
+        index += 1
+        string = entry
+    outfile.write(output)
     
         
     #for i in range(len(codewords)):
