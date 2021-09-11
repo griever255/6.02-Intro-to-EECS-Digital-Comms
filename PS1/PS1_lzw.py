@@ -21,27 +21,22 @@ def compress(filename):
         codewords[struct.pack(">H", i)] = chr(i)
 
     outname = filename + "test.zl"
-    output = ''
     outfile = open(outname, 'wb')
     # compress using LZW compression
     index = 256
     string = chr(uncompressed[0])
-    for elem in uncompressed:
+    for elem in uncompressed[1:]:
         symbol = chr(elem)
         if (string + symbol) in codewords.values():
             string = string + symbol
         else:
             codewords[index.to_bytes(2, 'big')] = string + symbol
-            outfile.write(index.to_bytes(2, 'big'))
-            output += str(index.to_bytes(2, 'big'))
+            position = list(codewords.values()).index(string)
+            outfile.write(struct.pack("<H", position))
             index += 1
             string = symbol
-    print(output)
-    
-        
-    #for i in range(len(codewords)):
-        # print(f"key = {struct.pack('>H', i)} value = {codewords[struct.pack('>H', i)]}")
-        
+    outfile.write(struct.pack("<H", list(codewords.values()).index(string)))
+
 
 def uncompress(filename):
     """
@@ -53,7 +48,6 @@ def uncompress(filename):
     """
     with open(filename, 'rb') as f:
         compressed = array.array("H", f.read())
-    print(compressed)
 
     codewords = {}
     # initialize codewords for ASCII characters
@@ -79,10 +73,6 @@ def uncompress(filename):
         index += 1
         string = entry
     outfile.write(output)
-    
-        
-    #for i in range(len(codewords)):
-        # print(f"key = {struct.pack('>H', i)} value = {codewords[struct.pack('>H', i)]}")
 
 if __name__ == '__main__':
     parser = OptionParser()
