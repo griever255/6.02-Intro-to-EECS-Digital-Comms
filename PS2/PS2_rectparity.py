@@ -21,20 +21,10 @@ def rect_parity(codeword,nrows,ncols):
     col_sums = packet.sum(axis=0)%2
     row_sums = packet.sum(axis=1)%2
     error_locs = []
-    for r_index, r_parity in enumerate(row_sums):
-        for c_index, c_parity in enumerate(col_sums):
+    for r_index, r_parity in enumerate(row_sums[:-1]):
+        for c_index, c_parity in enumerate(col_sums[:-1]):
             if c_parity == 1 and r_parity == 1:
                 error_locs.append([r_index,c_index])
-    
-    # Remove parity bit errors
-    for row in range(nrows):
-        for col in range(ncols):
-            if [row, ncols] in error_locs:
-                error_locs.remove([row, ncols])
-            elif [nrows, col] in error_locs:
-                error_locs.remove([nrows, col])
-            elif [nrows, ncols] in error_locs:
-                error_locs.remove([nrows, ncols])
 
     # Default is to return the codeword data
     message = codeword[:(nrows*ncols)]
