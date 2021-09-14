@@ -1,5 +1,6 @@
 # 6.02 PS: Syndrome decoding of a linear block code
 from numpy import *
+import numpy as np
 import PS2_tests
 
 # Replace each entry of a matrix A with its modulo 2 value 
@@ -22,7 +23,15 @@ def equal(a, b):
 # corresponding to the k decoded *message* bits.  We return codeword[:k] 
 # in the template; you can preserve that, or change it as you wish.
 def syndrome_decode(codeword, n, k, G):
-    ## YOUR CODE HERE
+    # Init identity matrix of kxk message bits
+    Ikk = G[:k, :k]
+    A = G[:k, k:]
+    Ink = np.identity(n-k, dtype=int)
+    H = np.concatenate((A.T, Ink), axis=1)
+    c = mod2(np.matmul(H, codeword.T))
+    for bit in range(k):
+        if equal(c.T, H[:, bit]):
+            codeword[bit] = (codeword[bit]+1)%2
     return codeword[:k]
 
 if __name__ == '__main__':
