@@ -41,9 +41,9 @@ if __name__=='__main__':
 
     decoded = numpy.array(soft.decode(received))
     if (decoded == expected).all() == True:
-        print 'Soft decoding succeeded on test case: congratulations!'
+        print('Soft decoding succeeded on test case: congratulations!')
     else:
-        print 'Oops... error in soft decoding'
-        print 'Decoded as', decoded
-        print 'Expected  ', expected
+        print('Oops... error in soft decoding')
+        print('Decoded as', decoded)
+        print('Expected  ', expected)
         sys.exit(1)

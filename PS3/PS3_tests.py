@@ -42,10 +42,10 @@ def test_hard_metrics(decoder,debug=False):
     sent = convolutional_encoder(message,k,glist)
     received_message = d.decode(sent,debug=debug)
     if numpy.any(message != received_message):
-        print "Decoder testing failed (no transmission errors)..."
-        print "Received parity bits:",sent
-        print "Decoded message returned by your decoder: ",received_message
-        print "Expected:",message
+        print("Decoder testing failed (no transmission errors)...")
+        print("Received parity bits:",sent)
+        print("Decoded message returned by your decoder: ",received_message)
+        print("Expected:",message)
         return
 
     # message with two transmission errors
@@ -53,13 +53,13 @@ def test_hard_metrics(decoder,debug=False):
     sent[12] = 1 - sent[12]
     received_message = d.decode(sent,debug=debug)
     if numpy.any(message != received_message):
-        print "Decoder testing failed (2 transmission errors)..."
-        print "Received parity bits:",sent
-        print "Decoded message returned by your decoder: ",received_message
-        print "Expected:",message
+        print("Decoder testing failed (2 transmission errors)...")
+        print("Received parity bits:",sent)
+        print("Decoded message returned by your decoder: ",received_message)
+        print("Expected:",message)
         return
 
-    print "Hard-metric Viterbi decoder tests complete!"
+    print("Hard-metric Viterbi decoder tests complete!")
 
 def test_soft_metrics(decoder):
     k = 3
@@ -71,13 +71,13 @@ def test_soft_metrics(decoder):
         dist = d.branch_metric(expected,received)
         expected_dist = sum([(expected[j] - received[j])**2 for j in xrange(len(glist))])
         if numpy.any((dist - expected_dist) > 1e-5):
-            print "soft branch_metric failed..."
-            print "expected voltages:",expected
-            print "received voltages:",received
-            print "value returned by branch_metric:",dist
-            print "expected return value:",expected_dist
+            print("soft branch_metric failed...")
+            print("expected voltages:",expected)
+            print("received voltages:",received)
+            print("value returned by branch_metric:",dist)
+            print("expected return value:",expected_dist)
             return
-    print "Soft-metric Viterbi decoder tests complete!"
+    print("Soft-metric Viterbi decoder tests complete!")
 
 # compute even parity for a binary sequence (a list of 0's and 1's).
 # returns 0 if the number of 1's in data is even, else 1

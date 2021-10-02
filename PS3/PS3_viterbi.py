@@ -121,20 +121,20 @@ class ViterbiDecoder:
             # print out what was just added to the trellis state
 
         if debug:
-             print "Final PM table \n"
+             print("Final PM table \n")
              for curState in xrange(0,self.nstates) :
                 for time in range(len(self.PM[curState,:])) :
                     if((self.PM[curState,time])>=1000000) :
-                        print 'inf ',
+                        print('inf ',)
                     else :
-                        print '%3d ' % (self.PM[curState,time]) ,              # print all times for a given state as one row 
-                print '\n'
-             print "\n Final Predecessor table \n"
+                        print('%3d ' % (self.PM[curState,time]) ,)              # print all times for a given state as one row 
+                print('\n')
+             print("\n Final Predecessor table \n")
              for curState in xrange(0,self.nstates) :
                 for time in range(len(self.Predecessor[curState,:])) :
-                    print '%3d ' % (self.Predecessor[curState,time]) ,              # print all times for a given state as one row 
-                print '\n'
-             print "\n"
+                    print('%3d ' % (self.Predecessor[curState,time]) ,)              # print all times for a given state as one row 
+                print('\n')
+             print("\n")
 
         # find the most-likely ending state from the last row
         # of the trellis
@@ -146,7 +146,7 @@ class ViterbiDecoder:
 
     # print out final path metrics
     def dump_state(self):
-        print self.PM[:,-1]
+        print(self.PM[:,-1])
 
 if __name__=='__main__':
     constraint_len = 3; glist = (7,5,3)
@@ -156,16 +156,15 @@ if __name__=='__main__':
     message = [1,0,1,0,1,1,0,0]
     received = PS3_tests.convolutional_encoder(message, constraint_len, glist)
     i = 0
-    print 'TEST', i
+    print('TEST', i)
     decoded = numpy.array(d.decode(received, debug=True))
-    print 'Testing without adding noise...'
+    print('Testing without adding noise...')
     if (message == decoded).all() == True: 
-        print 'Successfully decoded no-noise Test 0: congratulations!'
-        print
+        print('Successfully decoded no-noise Test 0: congratulations!')
     else:
-        print 'Oops... error in decoding no-noise Test', i
-        print 'Decoded as ', decoded
-        print 'Correct is', message
+        print('Oops... error in decoding no-noise Test', i)
+        print('Decoded as ', decoded)
+        print('Correct is', message)
         sys.exit(1)
 
     # second batch of test cases: different constraint lengths, generators
@@ -173,17 +172,16 @@ if __name__=='__main__':
     message = numpy.random.random_integers(0,1,nbits)
     for (constraint_len, glist) in ((3, (7,5)), (4, (0xD,0xE))):
         i = i + 1
-        print 'TEST', i
+        print('TEST', i)
         d = ViterbiDecoder(constraint_len, glist)
         received = PS3_tests.convolutional_encoder(message, constraint_len, glist)
         decoded = numpy.array(d.decode(received, debug=True))
         if (message == decoded).all() == True: 
-            print 'Successfully decoded no-noise Test', i, ': congratulations!'
-            print
+            print('Successfully decoded no-noise Test', i, ': congratulations!')
         else:
-            print 'Oops... error in decoding no-noise Test', i
-            print 'Decoded as', decoded
-            print 'Correct is', message
+            print('Oops... error in decoding no-noise Test', i)
+            print('Decoded as', decoded)
+            print('Correct is', message)
             sys.exit(1)
 
     # now try some tests with noise
