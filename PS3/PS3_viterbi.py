@@ -29,7 +29,7 @@ class ViterbiDecoder:
         # states as a two-element tuple.
         self.predecessor_states = \
           [((2*s+0) % self.nstates,(2*s+1) % self.nstates)
-           for s in xrange(self.nstates)]
+           for s in range(self.nstates)]
 
         # this is a 2D table implemented as a list of lists.
         # self.expected_parity[s1][s2] returns the r-bit sequence
@@ -38,8 +38,8 @@ class ViterbiDecoder:
         self.expected_parity = \
           [[PS3_tests.expected_parity(s1, s2, K, glist) \
             if s1 in self.predecessor_states[s2] else None
-            for s2 in xrange(self.nstates)]
-           for s1 in xrange(self.nstates)]
+            for s2 in range(self.nstates)]
+           for s1 in range(self.nstates)]
 
     # expected is an r-element list of the expected parity bits.
     # received is an r-element list of actual sampled voltages for the
@@ -111,7 +111,7 @@ class ViterbiDecoder:
         # use the Viterbi algorithm to compute PM
         # incrementally from the received parity bits.
         n = 0
-        for i in xrange(0,nreceived,self.r):
+        for i in range(0,nreceived,self.r):
             n += 1
 
             # Fill in the next columns of PM, Predecessor based
@@ -122,7 +122,7 @@ class ViterbiDecoder:
 
         if debug:
              print("Final PM table \n")
-             for curState in xrange(0,self.nstates) :
+             for curState in range(0,self.nstates) :
                 for time in range(len(self.PM[curState,:])) :
                     if((self.PM[curState,time])>=1000000) :
                         print('inf ',)
@@ -130,7 +130,7 @@ class ViterbiDecoder:
                         print('%3d ' % (self.PM[curState,time]) ,)              # print all times for a given state as one row 
                 print('\n')
              print("\n Final Predecessor table \n")
-             for curState in xrange(0,self.nstates) :
+             for curState in range(0,self.nstates) :
                 for time in range(len(self.Predecessor[curState,:])) :
                     print('%3d ' % (self.Predecessor[curState,time]) ,)              # print all times for a given state as one row 
                 print('\n')

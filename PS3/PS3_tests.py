@@ -65,7 +65,7 @@ def test_soft_metrics(decoder):
     k = 3
     glist = (7,6)
     d = decoder(k,glist)
-    for i in xrange(10):
+    for i in range(10):
         expected = numpy.random.random_integers(0,1,len(glist))
         received = numpy.random.rand(len(glist))
         dist = d.branch_metric(expected,received)
@@ -91,10 +91,10 @@ def codeword(data,nrows,ncols):
     result = numpy.zeros(ndata + nrows + ncols,dtype=int)
     result[:ndata] = data
     # compute row parity bits
-    for r in xrange(nrows):
+    for r in range(nrows):
         result[ndata + r] = even_parity(data[r*ncols:(r+1)*ncols])
     # compute column parity bits
-    for c in xrange(ncols):
+    for c in range(ncols):
         result[ndata + nrows + c] = even_parity(data[c:len(data):ncols])
     return result
 
@@ -116,6 +116,6 @@ def int_to_bits(n,nbits):
 # convert bit sequence (lsb first) to an int
 def bits_to_int(bits):
     result = 0
-    for i in xrange(len(bits)):
+    for i in range(len(bits)):
         result += bits[i] * (1 << i)
     return int(result)
