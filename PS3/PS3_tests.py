@@ -69,7 +69,7 @@ def test_soft_metrics(decoder):
         expected = numpy.random.random_integers(0,1,len(glist))
         received = numpy.random.rand(len(glist))
         dist = d.branch_metric(expected,received)
-        expected_dist = sum([(expected[j] - received[j])**2 for j in xrange(len(glist))])
+        expected_dist = sum([(expected[j] - received[j])**2 for j in range(len(glist))])
         if numpy.any((dist - expected_dist) > 1e-5):
             print("soft branch_metric failed...")
             print("expected voltages:",expected)
@@ -111,7 +111,7 @@ def decode_blocks(decoder,stream,nrows,ncols):
 
 # convert nbits of int into bit sequences, lsb first
 def int_to_bits(n,nbits):
-    return [(n >> i) & 1 for i in xrange(nbits)]
+    return [(n >> i) & 1 for i in range(nbits)]
 
 # convert bit sequence (lsb first) to an int
 def bits_to_int(bits):
