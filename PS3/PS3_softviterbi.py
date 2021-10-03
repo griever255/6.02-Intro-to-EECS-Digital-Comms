@@ -10,8 +10,10 @@ class SoftViterbiDecoder(ViterbiDecoder):
     # the square of the Euclidian distance between the 
     # expected and received voltages.
     def branch_metric(self,expected,received):
-        #your code here
-        pass
+        sum_sq = 0
+        for index, value in enumerate(received):
+            sum_sq += (value-expected[index])**2
+        return sum_sq
 
 if __name__=='__main__':
     # Test whether branch metrics are as expected
