@@ -71,7 +71,7 @@ class ViterbiDecoder:
     # and self.branch_metric().  To see what these mean, scan through the
     # code above.
     def viterbi_step(self,n,received_voltages):
-        # At each t_step, n, determine the two predecessaor states
+        # At each t_step, n, determine the two predecessor states
         # for each state, s
         for s, p_states in enumerate(self.predecessor_states):
             alpha, beta = p_states
@@ -86,8 +86,8 @@ class ViterbiDecoder:
             BM_alpha = self.branch_metric(expected_alpha, received_voltages)
             BM_beta = self.branch_metric(expected_beta, received_voltages)
             
-            # Determine the most-likely predecessor by minimum BM
-            if BM_alpha <= BM_beta:
+            # Determine the most-likely predecessor
+            if PM_alpha+BM_alpha <= PM_beta+BM_beta:
                 self.Predecessor[s][n] = alpha
             else:
                 self.Predecessor[s][n] = beta
@@ -110,12 +110,15 @@ class ViterbiDecoder:
     # Return the decoded message as a sequence of 0's and 1's.
     def traceback(self,s,n):
         msg = numpy.zeros(n)
-        s = format(s, "0"+str(self.nstates.bit_length()-1)+"b")
-        msg[n-1] = s[0]
-        for time in range(n, 1, -1):
-            s = self.Predecessor[self.most_likely_state(time),time]
-            s = format(s, "0"+str(self.nstates.bit_length()-1)+"b")
-            msg[time-2] = s[0]
+        bit_state = format(s, "0"+str(self.nstates.bit_length()-1)+"b")
+        msg[n-1] = bit_state[0]
+        n -= 1
+        while n >= 1:
+            prev_state = self.Predecessor[s,n+1]
+            bit_state = format(prev_state, "0"+str(self.nstates.bit_length()-1)+"b")
+            msg[n-1] = bit_state[0]
+            s = prev_state
+            n -=1
         return msg
 
 
@@ -134,7 +137,7 @@ class ViterbiDecoder:
 
         # at time 0, the starting state is the most likely, the other
         # states are "infinitely" worse.
-        self.PM[1:self.nstates,0] = 1000000
+        self.PM[1:self.nstates,0] = 10
 
         # a 2D array: rows are the states, columns are the time
         # points, contents indicate the predecessor state for each
@@ -191,7 +194,7 @@ if __name__=='__main__':
     received = PS3_tests.convolutional_encoder(message, constraint_len, glist)
     i = 0
     print('TEST', i)
-    decoded = numpy.array(d.decode(received, debug=True))
+    decoded = numpy.array(d.decode(received, debug=False))
     
     print('Testing without adding noise...')
     if (message == decoded).all() == True: 
@@ -210,7 +213,7 @@ if __name__=='__main__':
         print('TEST', i)
         d = ViterbiDecoder(constraint_len, glist)
         received = PS3_tests.convolutional_encoder(message, constraint_len, glist)
-        decoded = numpy.array(d.decode(received, debug=True))
+        decoded = numpy.array(d.decode(received, debug=False))
         if (message == decoded).all() == True: 
             print('Successfully decoded no-noise Test', i, ': congratulations!')
         else:
