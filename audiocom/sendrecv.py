@@ -6,10 +6,10 @@ import numpy
 import matplotlib
 import os
 if os.uname()[0] == 'Darwin':
-    matplotlib.use('macosx')
+    matplotlib.use('TkAgg')
 import matplotlib.pyplot as p
 import matplotlib.mlab as mlab
-import StringIO
+from io import StringIO
 import scipy.signal
 import scipy.stats
 import operator
