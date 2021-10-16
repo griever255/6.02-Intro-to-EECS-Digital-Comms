@@ -3,7 +3,7 @@ import Image
 def bin_nbit(number, n):
     out = bin(number)[2:]
     if len(out) > n:
-        raise Exception, "number too big to be stored in %d bits: %d" % (n, number)
+        raise Exception("number too big to be stored in %d bits: %d" % (n, number))
     while len(out) < n:
         out = '0' + out
     return out
@@ -23,7 +23,7 @@ def bits_from_colored_image(filename):
 def image_from_bits(bits,filename):
     i = Image.new('L',(32,32))
     d = []
-    for ix in xrange(32*32):
+    for ix in range(32*32):
         b = bits[ix*8 : (ix+1)*8]
         while len(b) < 8:
             b.append(0) # pad with zeros if we got too few bits
@@ -50,7 +50,7 @@ def colored_image_from_bits(bits, filename):
 
 def bin_to_int(binary_list):
     out = 0
-    for ix in xrange(len(binary_list)):
+    for ix in range(len(binary_list)):
         out += binary_list[ix] * (2**(len(binary_list) - 1 - ix))
     return out
 

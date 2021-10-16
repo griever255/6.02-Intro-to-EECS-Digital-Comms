@@ -26,7 +26,7 @@ def plot_hist(data, name):
     std = numpy.std(data)
     #y = mlab.normpdf(bins, mean, std)
     #p.plot(bins, y, 'r--', linewidth=2)
-    print 'Sample mean %.2g, sample stddev %.2g, max %.2g, min %.2g' % (mean, std, numpy.max(data), numpy.min(data))
+    print('Sample mean %.2g, sample stddev %.2g, max %.2g, min %.2g' % (mean, std, numpy.max(data), numpy.min(data)))
     p.xlabel('Voltage')
     p.ylabel('Prob. density')
     p.title('Histogram of the %s' % name)
@@ -54,7 +54,7 @@ def plot_graphs(mod_samples, rx_samples, demod_samples, hist_samples, spb,
     plotrange = (preamble.barkerlen()+header_len)*spb, len(hist_samples)-spb
     hist = hist_samples[plotrange[0]:plotrange[1]]
     hist_samples = []
-    for i in xrange(len(hist)/spb):
+    for i in range(len(hist)/spb):
         hist_samples.extend(hist[int((i+0.25)*spb):int((i+0.75)*spb)])
 
     p.figure(1)

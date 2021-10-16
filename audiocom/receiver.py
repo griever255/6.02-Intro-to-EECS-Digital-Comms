@@ -33,7 +33,7 @@ class Receiver:
         (mean) received value for that bit, and the signal-to-noise
         ratio estimated from the preamble's Barker sequence.
         '''
-        print 'Received', len(samples), 'samples'
+        print('Received', len(samples), 'samples')
         demod_samples = self.demodulate(samples)
         if self.demodtype == 'quad':
             hist_samples = numpy.real(demod_samples)
@@ -54,14 +54,14 @@ class Receiver:
         one = max(scipy.cluster.vq.kmeans(demod_samples, 2)[0])
         zero = min(scipy.cluster.vq.kmeans(demod_samples, 2)[0])
         thresh = (one + zero)/2.0
-        print 'One:', one, "Zero:", zero, '2-means thresh:', thresh
+        print('One:', one, "Zero:", zero, '2-means thresh:', thresh)
         # Find the sample corresp. to the first reliable bit "1"; this step 
         # is crucial to a proper and correct synchronization w/ the xmitter.
         offset = self.detect_one(demod_samples, thresh, one)
         if offset < 0:
-            print '*** ERROR: Could not detect any ones (so no preamble). ***'
-            print '\tIncrease volume / turn on mic?'
-            print '\tOr is there some other synchronization bug? ***'
+            print('*** ERROR: Could not detect any ones (so no preamble). ***')
+            print('\tIncrease volume / turn on mic?')
+            print('\tOr is there some other synchronization bug? ***')
             sys.exit(1)
 
         barker_start = preamble.detect(demod_samples, self, offset)
@@ -71,19 +71,19 @@ class Receiver:
         start = preamble.check(bits)
 
         if start >= 0:
-            print 'I think the Barker sequence starts at bit', start + barker_start/spb, \
-                '(sample', start*spb+barker_start,')'
+            print('I think the Barker sequence starts at bit', start + barker_start/spb, \
+                '(sample', start*spb+barker_start,')')
             recd_bits = numpy.array(bits[start:], dtype=int)
             if snr > 0.0:
-                print 'SNR from preamble: %.1f dB' % (10.0*math.log(snr, 10))
+                print('SNR from preamble: %.1f dB' % (10.0*math.log(snr, 10)))
             else:
-                print 'WARNING: Couldn\'t estimate SNR...'
+                print('WARNING: Couldn\'t estimate SNR...')
             return recd_bits, si[start:], snr, demod_samples[barker_start:], hist_samples[barker_start:], offset
         else:
-            print '*** ERROR: Could not detect preamble. ***'
-            print '\tIncrease volume / turn on mic / reduce noise?'
-            print '\tOr is there some other synchronization bug? ***'
-            print bits
+            print('*** ERROR: Could not detect preamble. ***')
+            print('\tIncrease volume / turn on mic / reduce noise?')
+            print('\tOr is there some other synchronization bug? ***')
+            print(bits)
             plot_hist(subsamples, 'samples: no separation between levels?')
             p.show()
             sys.exit(1)
@@ -97,7 +97,7 @@ class Receiver:
 
     def detect_one(self, demod_samples, thresh, one):
         spb = self.mapper.spb
-        for offset in xrange(len(demod_samples)):
+        for offset in range(len(demod_samples)):
             if numpy.mean(demod_samples[offset+spb/4:offset+3*spb/4]) > thresh + (one-thresh) / 2:
                 return offset
         return -1
@@ -110,7 +110,7 @@ class Receiver:
         elif self.demodtype == "quad":
             return demodulate.quad_demodulator(samples, self.samplerate, self.fc, self.mapper.spb)
         else:
-            print 'Unsupported demodulation scheme'
+            print('Unsupported demodulation scheme')
             sys.exit(1)
 
     def plot_freq_resp(self, hf, num_samples, name):

@@ -4,16 +4,16 @@ import sendrecv
 import math
 
 def avgfilter(samples_in, window):
-    raise NotImplementedError, "avgfilter"
+    raise NotImplementedError("avgfilter")
 
 def lpfilter(samples_in, omega_cut):
-    raise NotImplementedError, "lpfilter"
+    raise NotImplementedError("lpfilter")
 
 def envelope_demodulator(samples, sample_rate, carrier_freq, spb):
-    raise NotImplementedError, "envelope_demodulator"
+    raise NotImplementedError("envelope_demodulator")
 
 def avg_demodulator(samples, sample_rate, carrier_freq, spb):
-    raise NotImplementedError, "avg_demodulator"
+    raise NotImplementedError("avg_demodulator")
 
 def quad_demodulator(samples, sample_rate, carrier_freq, spb, channel_gap = 500):
-    raise NotImplementedError, "avg_demodulator"
+    raise NotImplementedError("avg_demodulator")

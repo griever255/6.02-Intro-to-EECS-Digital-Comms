@@ -28,7 +28,7 @@ class Transmitter:
         Multiply samples by a local sinusoid carrier of the same length.
         Return the multiplied result.
         '''
-        print '\tNumber of samples being sent:', len(samples)
+        print('\tNumber of samples being sent:', len(samples))
         return samples * local_carrier(self.fc, len(samples), self.samplerate)
 
     def plot_sig_spectrum(self, samples, name):

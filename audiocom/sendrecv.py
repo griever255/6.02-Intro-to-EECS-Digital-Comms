@@ -44,14 +44,14 @@ def hamming(s1,s2):
     return hd, err    
 
 def truncate(h, thresh):
-    for i in xrange(len(h)-1, 0, -1):
+    for i in range(len(h)-1, 0, -1):
         if abs(h[i]) > thresh:
             break
         return h[:i]
 
 def step2sample(s):
     h = numpy.append(s[0], [0]*(len(s)-1))
-    for i in xrange(1,max(len(s), 100)):
+    for i in range(1,max(len(s), 100)):
         h[i] = s[i]-s[i-1]
     truncate(h, 1.0e-4)
     return h
@@ -135,21 +135,21 @@ if __name__ == '__main__':
         # make sure there are as many channels as there are files
         if len(opt.fname) != len(channels):
             if len(channels) != 1:
-                raise RuntimeError, ("Number of given channel frequencies must either contain " +
+                raise RuntimeError("Number of given channel frequencies must either contain " +
                                      "one frequency (and then a series of frequencies are used, based " +
                                      "on the given frequency), or as many frequencies as there are file inputs")
             else:
-                channels = [channels[0] + int(opt.changap)*i for i in xrange(len(opt.fname))]
+                channels = [channels[0] + int(opt.changap)*i for i in range(len(opt.fname))]
 
     # Print option summary:
-    print 'Parameters in experiment:'
-    print '\tSamples per bit:', opt.spb
-    print '\tKeying scheme:', opt.ktype
-    print '\tDemodulation scheme:', opt.demod
-    print '\tChannel type:', ('Audio' if not opt.bypass else 'Bypass')
+    print('Parameters in experiment:')
+    print('\tSamples per bit:', opt.spb)
+    print('\tKeying scheme:', opt.ktype)
+    print('\tDemodulation scheme:', opt.demod)
+    print('\tChannel type:', ('Audio' if not opt.bypass else 'Bypass'))
     if opt.bypass:
-        print '\t  Noise:', opt.noise, ' lag:', opt.lag, 'h: [', opt.h, ']'
-    print '\tFrequency list:', channels, 'Hz'
+        print('\t  Noise:', opt.noise, ' lag:', opt.lag, 'h: [', opt.h, ']')
+    print('\tFrequency list:', channels, 'Hz')
     
     # create Preamble instance
     preamble = Preamble(opt.silence)
@@ -165,13 +165,13 @@ if __name__ == '__main__':
             src[fc] = Source(opt.srctype, opt.header, opt.numbits, None)
 
         i += 1
-        print 'Channel', fc, 'Hz'
-        print '\tData type:', src[fc].srctype
-        print '\tData size (bits):', len(src[fc].payload)
+        print('Channel', fc, 'Hz')
+        print('\tData type:', src[fc].srctype)
+        print('\tData size (bits):', len(src[fc].payload))
         if opt.header:
-            print '\tHeader len: %d bits' % len(src[fc].frame.header)
+            print('\tHeader len: %d bits' % len(src[fc].frame.header))
         else:
-            print '\tNo header used'
+            print('\tNo header used')
 
 
     # create channel instance
@@ -210,8 +210,8 @@ if __name__ == '__main__':
         samples_rx = channel.xmit_and_recv(mod_samples)
     except ZeroDivisionError:
         # should only happen for audio channel
-        print "I didn't get any samples; is your microphone or speaker OFF?"
-        print "Please turn them on!"
+        print("I didn't get any samples; is your microphone or speaker OFF?")
+        print("Please turn them on!")
         sys.exit(1)
 
     # process the received samples
@@ -228,9 +228,9 @@ if __name__ == '__main__':
     
         if len(rcd_payload) > 0:
             hd, err = hamming(rcd_payload, src[fc].payload)
-            print 'Hamming distance for payload at frequency', fc,'Hz:', hd, 'BER:', err
+            print('Hamming distance for payload at frequency', fc,'Hz:', hd, 'BER:', err)
         else:
-            print 'Could not recover transmission.'
+            print('Could not recover transmission.')
 
         if opt.graph:
             if opt.srctype == "unitstep":

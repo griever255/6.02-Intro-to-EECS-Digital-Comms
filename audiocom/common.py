@@ -22,14 +22,14 @@ def hamming(s1,s2):
     return hd, err    
 
 def truncate(h, thresh):
-    for i in xrange(len(h)-1, 0, -1):
+    for i in range(len(h)-1, 0, -1):
         if abs(h[i]) > thresh:
             break
     return h[:i]
 
 def step2sample(s):
     h = numpy.append(s[0], [0]*(len(s)-1))
-    for i in xrange(1,max(len(s), 100)):
+    for i in range(1,max(len(s), 100)):
         h[i] = s[i]-s[i-1]
     truncate(h, 1.0e-4)
     return h

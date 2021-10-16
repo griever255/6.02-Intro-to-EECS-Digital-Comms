@@ -27,18 +27,18 @@ class ReceiverCarrierPreamble:
         (mean) received value for that bit, and the signal-to-noise
         ratio estimated from the preamble's Barker sequence.
         '''
-        print 'Received', len(samples), 'samples'
+        print('Received', len(samples), 'samples')
         start = self.detect_preamble(samples)
-        print 'I think the signal (Barker sequence) starts at', start
+        print('I think the signal (Barker sequence) starts at', start)
         demod_samples = self.demodulate(samples[start:])
         recd_bits,si,snr = self.mapper.demap(demod_samples, self.demodtype)
         if snr > 0.0:
-            print 'Measured SNR: %.1f dB' % (10.0*math.log(snr, 10))
+            print('Measured SNR: %.1f dB' % (10.0*math.log(snr, 10)))
         else:
-            print 'Couldn\'t estimate SNR; negative signal???!'
+            print('Couldn\'t estimate SNR; negative signal???!')
         recd_bits = numpy.array(recd_bits, dtype=int)        
         if not (recd_bits[:self.preamble.barkerlen()] == self.preamble.barker()).all():
-            print '*** WARNING: Could not detect preamble reliably. ***'
+            print('*** WARNING: Could not detect preamble reliably. ***')
         return recd_bits, si, snr, demod_samples, []
         
     def detect_preamble(self, samples):
@@ -46,7 +46,7 @@ class ReceiverCarrierPreamble:
         Preamble detection modulating over carrier (ie, not in baseband).
         '''
         offset = max(0, self.detect_energy(samples))
-        print 'Some sort of energy detected around sample', offset
+        print('Some sort of energy detected around sample', offset)
         barker = self.preamble.barker()
         presamples = self.mapper.bits2samples(barker)
         mod_presamples = presamples * common.local_carrier(self.fc, len(presamples), self.samplerate)
@@ -112,7 +112,7 @@ class ReceiverCarrierPreamble:
             omega_lo = 1.5 * math.pi / self.mapper.spb
             omega_hi = self.fc * 2 * math.pi / self.samplerate
             omega_cut = (self.changap*2*math.pi/self.samplerate)/2.0
-            print "Rx LPF Cutoff frequency :", omega_cut
+            print("Rx LPF Cutoff frequency :", omega_cut)
     
             demod_filt_out = self.lpfilter(het_samples, omega_cut, 'receive LPF')
             samples_rx_out = numpy.abs(demod_filt_out)
@@ -122,7 +122,7 @@ class ReceiverCarrierPreamble:
         #        p.show()
             return samples_rx_out
         else:
-            print 'Unsupported demod type'
+            print('Unsupported demod type')
             sys.exit(1)
 
     def avgfilter(self, samples_in, window):

@@ -23,17 +23,17 @@ def source(data, numbits, spb, fname):
 
 def sink(samples, datatype, spb, demodtype):
     het_samples, demod_samples = receiver.demodulate(samples)
-    print 'demod', len(demod_samples)            
+    print('demod', len(demod_samples))          
     receiver.get_snr(demod_samples[:11*spb]) # snr over known Barker sequence
     recd_bits = receiver.mapper.demap2bits(demod_samples, demodtype)
-    print recd_bits
+    print(recd_bits)
 
     if opt.header:
         # Barker seq is 11 bits; the 16 bits following are the
         # header (length field)
         header = recd_bits[11:27]
         length = bin_to_int(header)
-        print 'Length from hdr', length
+        print('Length from hdr', length)
         startdata = 27  # data begins at bit offset 27 (= 11 + 16)
     else:
         length = len(recd_bits) - 11
@@ -41,12 +41,12 @@ def sink(samples, datatype, spb, demodtype):
 
     rcd_preamble = recd_bits[:11]
     rcd_data = recd_bits[startdata:startdata+length]
-    print 'Sent %d data bits. Recd %d data bits' % (len(bits), length)
+    print('Sent %d data bits. Recd %d data bits' % (len(bits), length))
 #            print 'R_dat:', rcd_data
     if datatype == "file":
         image.image_from_bits(rcd_data,'rcd-'+opt.fname)
     hd, err = hamming(bits, rcd_data)
-    print 'Hamming distance for payload:', hd, 'BER:', err
+    print('Hamming distance for payload:', hd, 'BER:', err)
 
     if datatype == "unitstep":
         het_samples, demod_samples = receiver.demodulate(samples)

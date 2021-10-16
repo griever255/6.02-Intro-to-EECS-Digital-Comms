@@ -42,7 +42,7 @@ class Mapper:
         it is 0 for bipolar keying.
         '''
         snr, thresh = self.snr(samples)
-        print '0/1 threshold: %.3f' % thresh
+        print('0/1 threshold: %.3f' % thresh)
 
         '''
         if demodtype == 'quad':
@@ -78,11 +78,11 @@ class Mapper:
             samp[barker[i]] = numpy.append(samp[barker[i]], samples[i*self.spb+self.spb/4:i*self.spb+3*self.spb/4])
         noise = [0.0, 0.0]
         signal = [0.0, 0.0]
-        for i in xrange(2):
+        for i in range(2):
             noise[i] = numpy.var(samp[i])
             signal[i] = numpy.mean(samp[i])
-        print 'On 0:', signal[0], noise[0]
-        print 'On 1:', signal[1], noise[1]
+        print('On 0:', signal[0], noise[0])
+        print('On 1:', signal[1], noise[1])
         noise = (len(samp[1])*noise[1] + len(samp[0])*noise[0]) / (len(samp[1]) + len(samp[0]))
         thresh = (signal[1] + signal[0])/2
         return (signal[1] - signal[0])**2 / noise, thresh

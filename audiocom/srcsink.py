@@ -66,7 +66,7 @@ class Source:
         return bits
 
     def int2bits(self, x, width): 
-        return tuple((0,1)[x>>j & 1] for j in xrange(width-1,-1,-1)) 
+        return tuple((0,1)[x>>j & 1] for j in range(width-1,-1,-1)) 
 
 class Sink:
     def __init__(self, receiver, hdr, srctype):
@@ -78,11 +78,11 @@ class Sink:
 
     def process(self, recd_bits, softinfo, fname=None):
         blen = self.rcvr.preamble.barkerlen()
-        print 'Recd preamble as', recd_bits[:blen]
+        print('Recd preamble as', recd_bits[:blen])
         if self.hdr:
             header = recd_bits[blen:blen+self.hlen]
             length = bin_to_int(header)
-            print 'Length from header', length
+            print('Length from header', length)
             startdata = blen + 16  # data begins at bit offset 27 (= 11 + 16)
         else:
             length = len(recd_bits) - blen
@@ -90,18 +90,18 @@ class Sink:
 
         rcd_preamble = recd_bits[:blen]
         rcd_data = recd_bits[startdata:startdata+length]
-        print 'Recd', len(rcd_data), 'data bits:'
+        print('Recd', len(rcd_data), 'data bits:')
         if self.srctype == "png": 
             image.image_from_bits(rcd_data, 'rcd-'+fname)
         elif self.srctype == "text":
-            print 'Text recd:', self.bits2text(rcd_data)
+            print('Text recd:', self.bits2text(rcd_data))
 
         return numpy.array(rcd_data, dtype=int)
 
     def bits2text(self, bits):
         text = []
         intbits = numpy.array([], dtype=numpy.uint8)
-        for i in xrange(len(bits)/8):
+        for i in range(len(bits)/8):
             intbits = numpy.append(intbits, self.bits2int(bits[i*8:(i+1)*8]))
         for c in intbits:
             text.append(chr(c))
@@ -109,6 +109,6 @@ class Sink:
 
     def bits2int(self, bits):
         out = 0
-        for ix in xrange(len(bits)):
+        for ix in range(len(bits)):
             out += bits[ix] * (2**(len(bits) - 1 - ix))
         return int(out)
