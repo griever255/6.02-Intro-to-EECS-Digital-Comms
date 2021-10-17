@@ -10,7 +10,8 @@ from preamble import *
 from graphs import *
 
 #change the following to "import demodulate" to use your own demodulator(s)
-import demodulate_audiocom as demodulate
+import demodulate
+# import demodulate_audiocom as demodulate
 
 class Receiver:
     def __init__(self, ktype, carrier_freq, changap, samplerate, spb, demodtype, preamble):
