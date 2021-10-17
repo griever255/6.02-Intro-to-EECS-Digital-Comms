@@ -20,12 +20,12 @@ def plot_hist(data, name):
     for d in data:
         if d < 1.0e-6:
             data = numpy.delete(data, d)
-    n, bins, patches = p.hist(data, math.sqrt(len(data)), normed=1,
+    n, bins, patches = p.hist(data, int(math.sqrt(len(data))), normed=1,
                               facecolor='g', alpha=0.75)
     mean = numpy.mean(data)
     std = numpy.std(data)
-    #y = mlab.normpdf(bins, mean, std)
-    #p.plot(bins, y, 'r--', linewidth=2)
+    # y = mlab.normpdf(bins, mean, std)
+    # p.plot(bins, y, 'r--', linewidth=2)
     print('Sample mean %.2g, sample stddev %.2g, max %.2g, min %.2g' % (mean, std, numpy.max(data), numpy.min(data)))
     p.xlabel('Voltage')
     p.ylabel('Prob. density')
@@ -77,6 +77,6 @@ def plot_graphs(mod_samples, rx_samples, demod_samples, hist_samples, spb,
     p.subplot(313)
     plot_hist(hist_samples, 'demod samples (1-D) histogram')
 
-    #p.figure(2)
-    #plot_eye(demod_samples[plotrange[0]:plotrange[1]], spb, 'eye diagram')
+    p.figure(2)
+    plot_eye(demod_samples[plotrange[0]:plotrange[1]], spb, 'eye diagram')
     p.show()
